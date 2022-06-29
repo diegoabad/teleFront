@@ -1,28 +1,32 @@
-import React, { useEffect } from "react";
-import { connect } from "react-redux";
-import { connectToRoom } from "../../utils/twilioUtils";
-import RoomLabel from "./RoomLabel";
-import TwilioRoom from "./TwilioRoom/TwilioRoom";
+import React, { useEffect } from 'react';
+import { connect } from 'react-redux';
+import { connectToRoom } from '../../utils/twilioUtils';
+import RoomLabel from './RoomLabel';
+import TwilioRoom from './TwilioRoom/TwilioRoom';
 
 const Videos = ({ room, setRoom, roomId, twilioAccessToken }) => {
-  useEffect(() => {
-    if (twilioAccessToken) {
-      connectToRoom(twilioAccessToken, roomId, setRoom);
-    }
-  }, [twilioAccessToken]);
+	useEffect(() => {
+		if (twilioAccessToken) {
+			connectToRoom(twilioAccessToken, roomId, setRoom);
+		}
+	}, [twilioAccessToken]);
 
-  return (
-    <div className="videos_container">
-      <RoomLabel roomId={roomId} />
-      {room && <TwilioRoom room={room} />}
-    </div>
-  );
+	return (
+		<div className='videos_container'>
+			<RoomLabel roomId={roomId} />
+			{room && <TwilioRoom room={room} />}
+		</div>
+	);
 };
 
+window.addEventListener('beforeunload', () => room.disconnect());
+
+window.addEventListener('pagehide', () => room.disconnect());
+
 const mapStoreStateToProps = (state) => {
-  return {
-    ...state,
-  };
+	return {
+		...state,
+	};
 };
 
 export default connect(mapStoreStateToProps)(Videos);
