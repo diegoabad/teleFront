@@ -11,6 +11,9 @@ const Videos = ({ room, setRoom, roomId, twilioAccessToken }) => {
 		}
 	}, [twilioAccessToken]);
 
+	window.addEventListener('beforeunload', () => room.disconnect());
+
+	window.addEventListener('pagehide', () => room.disconnect());
 	return (
 		<div className='videos_container'>
 			<RoomLabel roomId={roomId} />
@@ -18,10 +21,6 @@ const Videos = ({ room, setRoom, roomId, twilioAccessToken }) => {
 		</div>
 	);
 };
-
-window.addEventListener('beforeunload', () => room.disconnect());
-
-window.addEventListener('pagehide', () => room.disconnect());
 
 const mapStoreStateToProps = (state) => {
 	return {
